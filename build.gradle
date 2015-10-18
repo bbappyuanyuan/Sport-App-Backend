@@ -1,0 +1,19 @@
+group 'cn.edu.fudan'
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+repositories {
+    maven{
+        url 'http://maven.oschina.net/content/groups/public/'
+    }
+}
+
+dependencies {
+    testCompile 'junit:junit:4.11'
+
+    compile 'org.springframework:spring-webmvc:4.2.2.RELEASE'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.6.3'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
+}
+
