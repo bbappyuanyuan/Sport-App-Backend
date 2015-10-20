@@ -2,6 +2,7 @@ package cn.edu.fudan.sport.web.controller;
 
 import cn.edu.fudan.sport.dao.AccountDao;
 import cn.edu.fudan.sport.domain.Account;
+import cn.edu.fudan.sport.web.view.AccountVo;
 import cn.edu.fudan.sport.web.view.BaseVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,5 +39,19 @@ public class AccountController {
             return new BaseVo(0);
         }
         return new BaseVo(1);
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public AccountVo login(@RequestParam(value = "email") String email,
+                           @RequestParam(value = "password") String password) {
+        Account account;
+        try {
+            account = accountDao.getAccount(email, password);
+        } catch (Exception e) {
+            return new AccountVo(0, null);
+        }
+        if (account == null)
+            return new AccountVo(0, null);
+        return new AccountVo(1, account);
     }
 }

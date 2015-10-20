@@ -4,12 +4,21 @@ import java.sql.Timestamp;
 
 public class Account {
 
+    Integer id;
     String email;
     String password;
     String gender;
     Double height;
     Double weight;
     Timestamp createD;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getGender() {
         return gender;
