@@ -2,27 +2,17 @@ package cn.edu.fudan.sport.web.view;
 
 public class BaseVo {
 
-    private String key;
-    private String value;
+    int status;
 
-    public BaseVo(String key, String value) {
-        this.key = key;
-        this.value = value;
+    public BaseVo(int status) {
+        this.status = status;
     }
 
-    public String getKey() {
-        return key;
+    public int getStatus() {
+        return status;
     }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
+    public void setStatus(int status) {
+        this.status = status;
     }
 }
