@@ -2,6 +2,7 @@ group 'cn.edu.fudan'
 
 apply plugin: 'java'
 apply plugin: 'war'
+apply plugin: 'idea'
 
 repositories {
     maven{
@@ -9,11 +10,18 @@ repositories {
     }
 }
 
-dependencies {
-    testCompile 'junit:junit:4.11'
-
-    compile 'org.springframework:spring-webmvc:4.2.2.RELEASE'
-    compile 'com.fasterxml.jackson.core:jackson-core:2.6.3'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
+ext {
+    springVersion = '4.2.2.RELEASE'
+    jacksonVersion = '2.6.3'
+    mysqlVersion = '5.1.37'
 }
 
+dependencies {
+    testCompile 'junit:junit:4.12'
+    compile "org.springframework:spring-webmvc:${springVersion}"
+    compile "org.springframework:spring-jdbc:${springVersion}"
+    testCompile "org.springframework:spring-test:${springVersion}"
+    compile "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    compile "mysql:mysql-connector-java:${mysqlVersion}"
+}
