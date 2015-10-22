@@ -1,4 +1,4 @@
-package cn.edu.fudan.sport.web.view;
+package cn.edu.fudan.sport.view;
 
 import cn.edu.fudan.sport.domain.Account;
 

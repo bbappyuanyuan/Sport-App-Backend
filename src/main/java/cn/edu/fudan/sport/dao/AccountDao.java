@@ -41,4 +41,19 @@ public class AccountDao {
             }
         });
     }
+
+    public Integer getAccountId(String email) {
+        String sql = "SELECT id FROM account WHERE email = ?";
+        Object[] params = new Object[]{email};
+        return jdbcTemplate.queryForObject(sql, params, Integer.class);
+    }
+
+    public void update(Account account) {
+        String sql = "UPDATE account\n" +
+                "SET password = ?, gender = ?, height = ?, weight = ?\n" +
+                "WHERE id = ?";
+        Object[] params = new Object[]{account.getPassword(), account.getGender(), account.getHeight(),
+                account.getWeight(), account.getId()};
+        jdbcTemplate.update(sql, params);
+    }
 }

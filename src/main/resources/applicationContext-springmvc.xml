@@ -10,10 +10,19 @@
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context.xsd ">
 
-    <context:component-scan base-package="cn.edu.fudan.sport.web"/>
+    <!-- Standard xml based mvc config-->
+    <mvc:annotation-driven enable-matrix-variables="true"/>
 
-    <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+    <!-- Scan some API controllers-->
+    <context:component-scan base-package="cn.edu.fudan.sport.controller"/>
 
-    <mvc:annotation-driven/>
+    <!-- Enables swgger ui-->
+    <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
+    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
+
+    <!-- Include a swagger configuration-->
+    <bean class="cn.edu.fudan.sport.swagger.ApplicationSwaggerConfig"/>
+
+    <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
 
 </beans>
