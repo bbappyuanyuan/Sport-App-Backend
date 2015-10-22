@@ -5,7 +5,7 @@ apply plugin: 'war'
 apply plugin: 'idea'
 
 repositories {
-    maven{
+    maven {
         url 'http://maven.oschina.net/content/groups/public/'
     }
 }
@@ -15,6 +15,7 @@ ext {
     jacksonVersion = '2.6.3'
     mysqlVersion = '5.1.37'
     springfoxVersion = '2.2.2'
+    logbackVersion = '1.1.3'
 }
 
 dependencies {
@@ -31,4 +32,6 @@ dependencies {
 
     compile "io.springfox:springfox-swagger2:${springfoxVersion}"
     compile "io.springfox:springfox-swagger-ui:${springfoxVersion}"
+
+    compile "ch.qos.logback:logback-classic:${logbackVersion}"
 }
