@@ -23,7 +23,7 @@ public class AccountDao {
         jdbcTemplate.update(sql, params);
     }
 
-    public Account getAccount(String email, String password) {
+    public Account get(String email, String password) {
         String sql = "SELECT * FROM account WHERE email = ? AND password = ?";
         Object[] params = new Object[]{email, password};
         return (Account) jdbcTemplate.queryForObject(sql, params, new RowMapper<Object>() {
