@@ -11,7 +11,7 @@ import cn.edu.fudan.sport.dao.FansDao;
 import cn.edu.fudan.sport.view.BaseVo;
 
 @RestController
-@RequestMapping("accounts/{id}/fans")
+@RequestMapping("/accounts/{id}/fans")
 public class FansController {
 
     @Autowired AccountDao accountDao;
