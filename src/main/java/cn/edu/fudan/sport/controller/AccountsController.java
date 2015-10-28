@@ -15,11 +15,13 @@ import cn.edu.fudan.sport.domain.Account;
 import cn.edu.fudan.sport.view.AccountVo;
 import cn.edu.fudan.sport.view.BaseVo;
 
-@RestController @RequestMapping("/account") public class AccountController {
+@RestController
+@RequestMapping("/accounts")
+public class AccountsController {
 
     @Autowired private AccountDao accountDao;
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public BaseVo register(@RequestParam String email, @RequestParam String password,
         @RequestParam String gender, @RequestParam Double height, @RequestParam Double weight) {
         Account account = new Account();
@@ -37,11 +39,11 @@ import cn.edu.fudan.sport.view.BaseVo;
         return new BaseVo(1);
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public AccountVo login(@RequestParam String email, @RequestParam String password) {
         Account account;
         try {
-            account = accountDao.getAccount(email, password);
+            account = accountDao.get(email, password);
         } catch (Exception e) {
             return new AccountVo(0, null);
         }
@@ -50,7 +52,7 @@ import cn.edu.fudan.sport.view.BaseVo;
         return new AccountVo(1, account);
     }
 
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public BaseVo update(@PathVariable Integer id, @RequestParam String password,
         @RequestParam String gender, @RequestParam Double height, @RequestParam Double weight) {
         Account account = new Account();
