@@ -10,20 +10,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/portraits")
+@RequestMapping("/portraits/{id}")
 public class PortraitsController {
 
     @Autowired
     private PortraitDao portraitDao;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public BaseVo upload(@PathVariable Integer id, @RequestParam MultipartFile file) {
         if (file.isEmpty()) return new BaseVo(0);
         portraitDao.saveOrUpdate(id, file);
         return new BaseVo(1);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public void get(@PathVariable Integer id, HttpServletResponse response) {
         byte[] bytes = portraitDao.load(id);
         response.setContentType("image/jpeg");

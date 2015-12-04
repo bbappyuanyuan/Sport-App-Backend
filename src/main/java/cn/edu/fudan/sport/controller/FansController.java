@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/accounts/{id}/fans")
+@RequestMapping("/fans/{id}")
 public class FansController {
 
     @Autowired
