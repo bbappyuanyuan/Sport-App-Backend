@@ -1,29 +1,25 @@
 package cn.edu.fudan.sport.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.sql.Timestamp;
-import java.util.Date;
-
 import cn.edu.fudan.sport.dao.AccountDao;
 import cn.edu.fudan.sport.domain.Account;
 import cn.edu.fudan.sport.view.AccountVo;
 import cn.edu.fudan.sport.view.BaseVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.Timestamp;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/accounts")
 public class AccountsController {
 
-    @Autowired private AccountDao accountDao;
+    @Autowired
+    private AccountDao accountDao;
 
     @RequestMapping(method = RequestMethod.POST)
     public BaseVo register(@RequestParam String email, @RequestParam String password,
-        @RequestParam String gender, @RequestParam Double height, @RequestParam Double weight) {
+                           @RequestParam String gender, @RequestParam Double height, @RequestParam Double weight) {
         Account account = new Account();
         account.setEmail(email);
         account.setPassword(password);
@@ -54,7 +50,7 @@ public class AccountsController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public BaseVo update(@PathVariable Integer id, @RequestParam String password,
-        @RequestParam String gender, @RequestParam Double height, @RequestParam Double weight) {
+                         @RequestParam String gender, @RequestParam Double height, @RequestParam Double weight) {
         Account account = new Account();
         account.setId(id);
         account.setPassword(password);
