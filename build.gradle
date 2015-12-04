@@ -18,11 +18,14 @@ ext {
     mysqlVersion = '5.1.37'
     springfoxVersion = '2.2.2'
     logbackVersion = '1.1.3'
+    junitVersion = '4.12'
+    httpComponentsVersion = '4.5.1'
 }
 
 dependencies {
-    testCompile 'junit:junit:4.12'
 
+    testCompile "junit:junit:${junitVersion}"
+    
     compile "org.apache.tomcat:tomcat-servlet-api:${tomcatVersion}"
 
     compile "org.springframework:spring-webmvc:${springVersion}"
@@ -39,4 +42,7 @@ dependencies {
     compile "io.springfox:springfox-swagger-ui:${springfoxVersion}"
 
     compile "ch.qos.logback:logback-classic:${logbackVersion}"
+
+    testCompile "org.apache.httpcomponents:httpclient:${httpComponentsVersion}"
+    testCompile "org.apache.httpcomponents:httpmime:${httpComponentsVersion}"
 }
