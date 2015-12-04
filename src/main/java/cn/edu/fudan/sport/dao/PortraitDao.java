@@ -9,7 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 @Repository
-public class LocalFileDao {
+public class PortraitDao {
 
     private String path = System.getProperty("catalina.home");
 

@@ -1,6 +1,6 @@
 package cn.edu.fudan.sport.controller;
 
-import cn.edu.fudan.sport.dao.FansDao;
+import cn.edu.fudan.sport.dao.FanDao;
 import cn.edu.fudan.sport.view.BaseVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class FansController {
 
     @Autowired
-    private FansDao fansDao;
+    private FanDao fanDao;
 
     @RequestMapping(value = "/{id2}", method = RequestMethod.POST)
     public BaseVo follow(@PathVariable Integer id, @PathVariable Integer id2) {
         try {
-            fansDao.insert(id, id2);
+            fanDao.insert(id, id2);
         } catch (Exception e) {
             return new BaseVo(0);
         }
@@ -28,7 +28,7 @@ public class FansController {
     @RequestMapping(value = "/{id2}", method = RequestMethod.DELETE)
     public BaseVo unfollow(@PathVariable Integer id, @PathVariable Integer id2) {
         try {
-            fansDao.delete(id, id2);
+            fanDao.delete(id, id2);
         } catch (Exception e) {
             return new BaseVo(0);
         }

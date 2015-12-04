@@ -1,6 +1,6 @@
 package cn.edu.fudan.sport.controller;
 
-import cn.edu.fudan.sport.dao.LocalFileDao;
+import cn.edu.fudan.sport.dao.PortraitDao;
 import cn.edu.fudan.sport.view.BaseVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,19 +14,18 @@ import java.io.IOException;
 public class PortraitsController {
 
     @Autowired
-    private LocalFileDao localFileDao;
+    private PortraitDao portraitDao;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public BaseVo upload(@PathVariable Integer id, @RequestParam MultipartFile file) {
         if (file.isEmpty()) return new BaseVo(0);
-        localFileDao.saveOrUpdate(id, file);
+        portraitDao.saveOrUpdate(id, file);
         return new BaseVo(1);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseBody
     public void get(@PathVariable Integer id, HttpServletResponse response) {
-        byte[] bytes = localFileDao.load(id);
+        byte[] bytes = portraitDao.load(id);
         response.setContentType("image/jpeg");
         try {
             response.getOutputStream().write(bytes);
