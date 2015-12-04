@@ -43,6 +43,6 @@ dependencies {
 
     compile "ch.qos.logback:logback-classic:${logbackVersion}"
 
-    testCompile "org.apache.httpcomponents:httpclient:${httpComponentsVersion}"
-    testCompile "org.apache.httpcomponents:httpmime:${httpComponentsVersion}"
+    compile "org.apache.httpcomponents:httpclient:${httpComponentsVersion}"
+    compile "org.apache.httpcomponents:httpmime:${httpComponentsVersion}"
 }
