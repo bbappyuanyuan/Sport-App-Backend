@@ -1,6 +1,7 @@
 package cn.edu.fudan.sport.frontend;
 
 import cn.edu.fudan.sport.domain.Account;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.Test;
 
 import java.io.DataOutputStream;
@@ -17,6 +18,8 @@ public class HttpServerTest {
     public void testAccountsController() {
         server.registerAccount("test@test.com", "123456", "male", 175.0, 60.0);
         Account account = server.loginAccount("test@test.com", "123456");
+        Account account1 = server.loginAccount(account.getId());
+        assertTrue(account1.getEmail().equals(account.getEmail()));
         assertTrue(account.getEmail().equals("test@test.com"));
         assertTrue(account.getHeight().equals(175.0));
         account.setPassword("new");
@@ -29,16 +32,22 @@ public class HttpServerTest {
 
     @Test
     public void testFansController() {
-        server.followFan(1, 2);
-        server.followFan(3, 4);
-        server.unfollowFan(3, 4);
+        int s = server.getFans(1).size();
+        server.followFan(1, 4000);
+        server.followFan(1, 4001);
+        assertTrue(server.getFans(1).size() == s + 2);
+        server.unfollowFan(1, 4001);
+        assertTrue(server.getFans(1).size() == s + 1);
+        server.unfollowFan(1, 4000);
+        assertTrue(server.getFans(1).size() == s);
+
     }
 
     @Test
+    @Ignore
     public void testPortraitsController() {
-        assertTrue(server.getPortrait(1) != null);
-        if (server.getPortrait(1) != null)
-            saveFile("testGetPortrait", server.getPortrait(1));
+        assertTrue(server.downloadPortrait(1) != null);
+        saveFile("testGetPortrait", server.downloadPortrait(1));
         assertTrue(server.uploadPortrait(2333, new File("pic")));
     }
 

@@ -18,17 +18,10 @@ public class AccountsController {
     private AccountDao accountDao;
 
     @RequestMapping(method = RequestMethod.POST)
-    public BaseVo register(@RequestParam String email, @RequestParam String password,
-                           @RequestParam String gender, @RequestParam Double height, @RequestParam Double weight) {
-        Account account = new Account();
-        account.setEmail(email);
-        account.setPassword(password);
-        account.setGender(gender);
-        account.setHeight(height);
-        account.setWeight(weight);
-        account.setCreateD(new Timestamp(new Date().getTime()));
+    public BaseVo register(@RequestParam String email, @RequestParam String password, @RequestParam String gender,
+                           @RequestParam Double height, @RequestParam Double weight) {
         try {
-            accountDao.insert(account);
+            accountDao.insert(email, password, gender, height, weight, new Timestamp(new Date().getTime()));
         } catch (Exception e) {
             return new BaseVo(0);
         }
@@ -36,10 +29,14 @@ public class AccountsController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public AccountVo login(@RequestParam String email, @RequestParam String password) {
+    public AccountVo login(@RequestParam(required = false) Integer id, @RequestParam(required = false) String email,
+                           @RequestParam(required = false) String password) {
         Account account;
         try {
-            account = accountDao.get(email, password);
+            if (id != null)
+                account = accountDao.get(id);
+            else
+                account = accountDao.get(email, password);
         } catch (Exception e) {
             return new AccountVo(0, null);
         }

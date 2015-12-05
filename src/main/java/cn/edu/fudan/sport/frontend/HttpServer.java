@@ -3,6 +3,7 @@ package cn.edu.fudan.sport.frontend;
 import cn.edu.fudan.sport.domain.Account;
 import cn.edu.fudan.sport.view.AccountVo;
 import cn.edu.fudan.sport.view.BaseVo;
+import cn.edu.fudan.sport.view.FansVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -18,6 +19,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import java.io.File;
+import java.util.List;
 
 public class HttpServer {
 
@@ -39,6 +41,26 @@ public class HttpServer {
             HttpGet httpGet = new HttpGet(new URIBuilder(host + request)
                     .addParameter("email", email)
                     .addParameter("password", password)
+                    .build());
+            HttpResponse response = httpClient.execute(httpGet);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                HttpEntity entity = response.getEntity();
+                String body = EntityUtils.toString(entity);
+                AccountVo vo = objectMapper.readValue(body, AccountVo.class);
+                if (vo.getStatus() == 1)
+                    return vo.getAccount();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Account loginAccount(Integer id) {
+        String request = "/accounts";
+        try {
+            HttpGet httpGet = new HttpGet(new URIBuilder(host + request)
+                    .addParameter("id", String.valueOf(id))
                     .build());
             HttpResponse response = httpClient.execute(httpGet);
             if (response.getStatusLine().getStatusCode() == 200) {
@@ -102,8 +124,26 @@ public class HttpServer {
     }
 
     // Fans Controller
-    public boolean unfollowFan(Integer id, Integer id2) {
-        String request = "/fans/" + id + "/" + id2;
+    public List<Integer> getFans(Integer follower) {
+        String request = "/fans/" + follower;
+        try {
+            HttpGet httpGet = new HttpGet(host + request);
+            HttpResponse response = httpClient.execute(httpGet);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                HttpEntity entity = response.getEntity();
+                String body = EntityUtils.toString(entity);
+                FansVo vo = objectMapper.readValue(body, FansVo.class);
+                if (vo.getStatus() == 1)
+                    return vo.getFans();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean unfollowFan(Integer follower, Integer followee) {
+        String request = "/fans/" + follower + "/" + followee;
         try {
             HttpDelete httpDelete = new HttpDelete(host + request);
             HttpResponse response = httpClient.execute(httpDelete);
@@ -120,8 +160,8 @@ public class HttpServer {
         return false;
     }
 
-    public boolean followFan(Integer id, Integer id2) {
-        String request = "/fans/" + id + "/" + id2;
+    public boolean followFan(Integer follower, Integer followee) {
+        String request = "/fans/" + follower + "/" + followee;
         try {
             HttpPost httpPost = new HttpPost(host + request);
             HttpResponse response = httpClient.execute(httpPost);
@@ -139,7 +179,7 @@ public class HttpServer {
     }
 
     // Portraits Controller
-    public byte[] getPortrait(Integer id) {
+    public byte[] downloadPortrait(Integer id) {
         String request = "/portraits/" + id;
         try {
             HttpGet httpGet = new HttpGet(host + request);

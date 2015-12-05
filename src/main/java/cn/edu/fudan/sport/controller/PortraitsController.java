@@ -24,7 +24,7 @@ public class PortraitsController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public void get(@PathVariable Integer id, HttpServletResponse response) {
+    public void download(@PathVariable Integer id, HttpServletResponse response) {
         byte[] bytes = portraitDao.load(id);
         response.setContentType("image/jpeg");
         try {
