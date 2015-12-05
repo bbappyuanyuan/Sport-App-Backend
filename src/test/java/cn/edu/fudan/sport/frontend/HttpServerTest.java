@@ -1,5 +1,6 @@
 package cn.edu.fudan.sport.frontend;
 
+import cn.edu.fudan.sport.domain.Account;
 import org.junit.Test;
 
 import java.io.DataOutputStream;
@@ -11,6 +12,27 @@ import static org.junit.Assert.assertTrue;
 public class HttpServerTest {
 
     HttpServer server = HttpServer.getInstance();
+
+    @Test
+    public void testAccountsController() {
+        server.registerAccount("test@test.com", "123456", "male", 175.0, 60.0);
+        Account account = server.loginAccount("test@test.com", "123456");
+        assertTrue(account.getEmail().equals("test@test.com"));
+        assertTrue(account.getHeight().equals(175.0));
+        account.setPassword("new");
+        account.setGender("female");
+        server.updateAccount(account.getId(), account.getPassword(), account.getGender(), account.getHeight(), account.getWeight());
+        Account account2 = server.loginAccount(account.getEmail(), account.getPassword());
+        assertTrue(account2.getPassword().equals(account.getPassword()));
+        assertTrue(account2.getGender().equals(account.getGender()));
+    }
+
+    @Test
+    public void testFansController() {
+        server.followFan(1, 2);
+        server.followFan(3, 4);
+        server.unfollowFan(3, 4);
+    }
 
     @Test
     public void testPortraitsController() {
