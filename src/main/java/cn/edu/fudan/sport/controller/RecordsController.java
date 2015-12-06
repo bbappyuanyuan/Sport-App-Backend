@@ -30,7 +30,7 @@ public class RecordsController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public RecordsVo get(@PathVariable Integer id, @RequestParam(required = false, defaultValue = "100") Integer limit) {
+    public RecordsVo get(@PathVariable Integer id, @RequestParam(required = false, defaultValue = "10") Integer limit) {
         List<Record> records = null;
         try {
             records = recordDao.select(id, limit);
