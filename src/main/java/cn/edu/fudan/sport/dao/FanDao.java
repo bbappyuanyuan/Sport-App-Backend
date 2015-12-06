@@ -24,9 +24,15 @@ public class FanDao {
         jdbcTemplate.update(sql, params);
     }
 
-    public List<Integer> get(Integer follower) {
+    public List<Integer> selectFollowees(Integer follower) {
         String sql = "SELECT * FROM fan WHERE follower = ?";
         Object[] params = new Object[]{follower};
+        return jdbcTemplate.queryForList(sql, params, Integer.class);
+    }
+
+    public List<Integer> selectFollowers(Integer followee) {
+        String sql = "SELECT * FROM fan WHERE followee = ?";
+        Object[] params = new Object[]{followee};
         return jdbcTemplate.queryForList(sql, params, Integer.class);
     }
 }

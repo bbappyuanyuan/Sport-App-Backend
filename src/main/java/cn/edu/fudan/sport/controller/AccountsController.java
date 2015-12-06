@@ -34,9 +34,9 @@ public class AccountsController {
         Account account;
         try {
             if (id != null)
-                account = accountDao.get(id);
+                account = accountDao.select(id);
             else
-                account = accountDao.get(email, password);
+                account = accountDao.select(email, password);
         } catch (Exception e) {
             return new AccountVo(0, null);
         }

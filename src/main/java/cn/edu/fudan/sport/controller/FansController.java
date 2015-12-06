@@ -18,7 +18,7 @@ public class FansController {
     @Autowired
     private FanDao fanDao;
 
-    @RequestMapping(value = "/{id2}", method = RequestMethod.POST)
+    @RequestMapping(value = "/followees/{id2}", method = RequestMethod.POST)
     public BaseVo follow(@PathVariable Integer id, @PathVariable Integer id2) {
         try {
             fanDao.insert(id, id2);
@@ -28,7 +28,7 @@ public class FansController {
         return new BaseVo(1);
     }
 
-    @RequestMapping(value = "/{id2}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/followees/{id2}", method = RequestMethod.DELETE)
     public BaseVo unfollow(@PathVariable Integer id, @PathVariable Integer id2) {
         try {
             fanDao.delete(id, id2);
@@ -38,11 +38,22 @@ public class FansController {
         return new BaseVo(1);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public FansVo get(@PathVariable Integer id) {
+    @RequestMapping(value = "/followees", method = RequestMethod.GET)
+    public FansVo getFollowees(@PathVariable Integer id) {
         List<Integer> fans;
         try {
-            fans = fanDao.get(id);
+            fans = fanDao.selectFollowees(id);
+        } catch (Exception e) {
+            return new FansVo(0, null);
+        }
+        return new FansVo(1, fans);
+    }
+
+    @RequestMapping(value = "/followers", method = RequestMethod.GET)
+    public FansVo getFollowers(@PathVariable Integer id) {
+        List<Integer> fans;
+        try {
+            fans = fanDao.selectFollowers(id);
         } catch (Exception e) {
             return new FansVo(0, null);
         }

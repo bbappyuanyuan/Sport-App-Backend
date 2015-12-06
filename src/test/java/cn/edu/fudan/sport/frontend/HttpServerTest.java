@@ -32,14 +32,14 @@ public class HttpServerTest {
 
     @Test
     public void testFansController() {
-        int s = server.getFans(1).size();
+        int s = server.getFollowees(1).size();
         server.followFan(1, 4000);
         server.followFan(1, 4001);
-        assertTrue(server.getFans(1).size() == s + 2);
+        assertTrue(server.getFollowees(1).size() == s + 2);
         server.unfollowFan(1, 4001);
-        assertTrue(server.getFans(1).size() == s + 1);
+        assertTrue(server.getFollowees(1).size() == s + 1);
         server.unfollowFan(1, 4000);
-        assertTrue(server.getFans(1).size() == s);
+        assertTrue(server.getFollowees(1).size() == s);
 
     }
 

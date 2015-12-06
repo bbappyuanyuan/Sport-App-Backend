@@ -23,7 +23,7 @@ public class AccountDao {
         jdbcTemplate.update(sql, params);
     }
 
-    public Account get(String email, String password) {
+    public Account select(String email, String password) {
         String sql = "SELECT * FROM account WHERE email = ? AND password = ?";
         Object[] params = new Object[]{email, password};
         return jdbcTemplate.queryForObject(sql, params, Account.class);
@@ -43,7 +43,7 @@ public class AccountDao {
 //        });
     }
 
-    public Account get(Integer id) {
+    public Account select(Integer id) {
         String sql = "SELECT * FROM account WHERE id = ?";
         Object[] params = new Object[]{id};
         return (Account) jdbcTemplate.queryForObject(sql, params, new RowMapper<Object>() {

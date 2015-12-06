@@ -19,6 +19,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HttpServer {
@@ -124,8 +125,8 @@ public class HttpServer {
     }
 
     // Fans Controller
-    public List<Integer> getFans(Integer follower) {
-        String request = "/fans/" + follower;
+    public List<Account> getFollowees(Integer follower) {
+        String request = "/fans/" + follower + "/followees";
         try {
             HttpGet httpGet = new HttpGet(host + request);
             HttpResponse response = httpClient.execute(httpGet);
@@ -133,8 +134,16 @@ public class HttpServer {
                 HttpEntity entity = response.getEntity();
                 String body = EntityUtils.toString(entity);
                 FansVo vo = objectMapper.readValue(body, FansVo.class);
-                if (vo.getStatus() == 1)
-                    return vo.getFans();
+                if (vo.getStatus() == 1) {
+                    List<Integer> ids = vo.getFans();
+                    List<Account> accounts = new ArrayList<>();
+                    for (Integer id : ids) {
+                        Account a = loginAccount(id);
+                        if (a == null)
+                            return null;
+                        accounts.add(a);
+                    }
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -143,7 +152,7 @@ public class HttpServer {
     }
 
     public boolean unfollowFan(Integer follower, Integer followee) {
-        String request = "/fans/" + follower + "/" + followee;
+        String request = "/fans/" + follower + "/followees/" + followee;
         try {
             HttpDelete httpDelete = new HttpDelete(host + request);
             HttpResponse response = httpClient.execute(httpDelete);
@@ -161,7 +170,7 @@ public class HttpServer {
     }
 
     public boolean followFan(Integer follower, Integer followee) {
-        String request = "/fans/" + follower + "/" + followee;
+        String request = "/fans/" + follower + "/followees/" + followee;
         try {
             HttpPost httpPost = new HttpPost(host + request);
             HttpResponse response = httpClient.execute(httpPost);
@@ -176,6 +185,32 @@ public class HttpServer {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<Account> getFollowers(Integer followee) {
+        String request = "/fans/" + followee + "/followers";
+        try {
+            HttpGet httpGet = new HttpGet(host + request);
+            HttpResponse response = httpClient.execute(httpGet);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                HttpEntity entity = response.getEntity();
+                String body = EntityUtils.toString(entity);
+                FansVo vo = objectMapper.readValue(body, FansVo.class);
+                if (vo.getStatus() == 1) {
+                    List<Integer> ids = vo.getFans();
+                    List<Account> accounts = new ArrayList<>();
+                    for (Integer id : ids) {
+                        Account a = loginAccount(id);
+                        if (a == null)
+                            return null;
+                        accounts.add(a);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // Portraits Controller
