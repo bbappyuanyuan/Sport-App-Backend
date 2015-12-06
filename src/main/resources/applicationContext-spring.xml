@@ -12,7 +12,7 @@
 
     <context:component-scan base-package="cn.edu.fudan.sport.dao"/>
 
-    <context:property-placeholder location="classpath:mysql.properties"/>
+    <context:property-placeholder location="classpath:local_mysql.properties"/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>

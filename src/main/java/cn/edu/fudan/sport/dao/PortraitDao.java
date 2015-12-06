@@ -11,10 +11,10 @@ import java.io.IOException;
 @Repository
 public class PortraitDao {
 
-    private String path = System.getProperty("catalina.home");
+    private String path = System.getProperty("catalina.home") + "/SPORT_DB";
 
     public void saveOrUpdate(Integer id, MultipartFile file) {
-        File dest = new File(path + "/portraits/" + id);
+        File dest = new File(path + "/portrait/" + id);
         if (!dest.exists())
             dest.mkdirs();
         try {
@@ -25,9 +25,9 @@ public class PortraitDao {
     }
 
     public byte[] load(Integer id) {
-        File dest = new File(path + "/portraits/" + id);
+        File dest = new File(path + "/portrait/" + id);
         if (!dest.exists())
-            dest = new File(path + "/portraits/default");
+            dest = new File(path + "/portrait/default");
         try {
             FileInputStream fis = new FileInputStream(dest);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
