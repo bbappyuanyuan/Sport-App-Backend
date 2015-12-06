@@ -28,15 +28,24 @@ public class AccountsController {
         return new BaseVo(1);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public AccountVo login(@RequestParam(required = false) Integer id, @RequestParam(required = false) String email,
-                           @RequestParam(required = false) String password) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public AccountVo get(@PathVariable Integer id) {
         Account account;
         try {
-            if (id != null)
-                account = accountDao.select(id);
-            else
-                account = accountDao.select(email, password);
+            account = accountDao.select(id);
+        } catch (Exception e) {
+            return new AccountVo(0, null);
+        }
+        if (account == null)
+            return new AccountVo(0, null);
+        return new AccountVo(1, account);
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public AccountVo login(@RequestParam String email, @RequestParam String password) {
+        Account account;
+        try {
+            account = accountDao.select(email, password);
         } catch (Exception e) {
             return new AccountVo(0, null);
         }

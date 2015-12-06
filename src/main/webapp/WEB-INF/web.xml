@@ -3,7 +3,7 @@
 	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
 
-    <display-name>sport</display-name>
+    <display-name>Sport-App-Backend</display-name>
 
     <!-- spring context -->
     <listener>

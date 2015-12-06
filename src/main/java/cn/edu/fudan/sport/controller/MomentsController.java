@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +41,12 @@ public class MomentsController {
             moments = momentDao.select(id, limit);
             for (Integer followee : followees)
                 moments.addAll(momentDao.select(followee, limit));
+            Collections.sort(moments, new Comparator<Moment>() {
+                @Override
+                public int compare(Moment o1, Moment o2) {
+                    return o2.getId() - o1.getId();
+                }
+            });
             if (moments.size() > limit)
                 moments = moments.subList(0, limit);
         } catch (Exception e) {

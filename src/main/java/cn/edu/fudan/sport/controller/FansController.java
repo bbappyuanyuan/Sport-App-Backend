@@ -65,7 +65,7 @@ public class FansController {
     public AccountsVo getFollowers(@PathVariable Integer id) {
         List<Account> accounts = null;
         try {
-            List<Integer> ids = fanDao.selectFollowees(id);
+            List<Integer> ids = fanDao.selectFollowers(id);
             accounts = new ArrayList<>();
             for (Integer account_id : ids) {
                 Account account = accountDao.select(account_id);

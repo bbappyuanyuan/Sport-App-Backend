@@ -2,6 +2,7 @@ package cn.edu.fudan.sport.dao;
 
 import cn.edu.fudan.sport.domain.Record;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -25,6 +26,6 @@ public class RecordDao {
     public List<Record> select(Integer accountId, Integer limit) {
         String sql = "SELECT * FROM record WHERE account_id = ? ORDER BY ID DESC LIMIT ?";
         Object[] params = new Object[]{accountId, limit};
-        return jdbcTemplate.queryForList(sql, params, Record.class);
+        return jdbcTemplate.query(sql, params, new BeanPropertyRowMapper<Record>(Record.class));
     }
 }
