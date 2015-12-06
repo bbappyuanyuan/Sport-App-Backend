@@ -3,11 +3,8 @@ package cn.edu.fudan.sport.dao;
 import cn.edu.fudan.sport.domain.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 
 @Repository
@@ -46,23 +43,24 @@ public class AccountDao {
     public Account select(Integer id) {
         String sql = "SELECT * FROM account WHERE id = ?";
         Object[] params = new Object[]{id};
-        return (Account) jdbcTemplate.queryForObject(sql, params, new RowMapper<Object>() {
-            @Override
-            public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-                Account account = new Account();
-                account.setId(rs.getInt("id"));
-                account.setEmail(rs.getString("email"));
-                account.setPassword(rs.getString("password"));
-                account.setGender(rs.getString("gender"));
-                account.setHeight(rs.getDouble("height"));
-                account.setWeight(rs.getDouble("weight"));
-                account.setCreateD(rs.getTimestamp("create_d"));
-                return account;
-            }
-        });
+        return jdbcTemplate.queryForObject(sql, params, Account.class);
+//        return (Account) jdbcTemplate.queryForObject(sql, params, new RowMapper<Object>() {
+//            @Override
+//            public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+//                Account account = new Account();
+//                account.setId(rs.getInt("id"));
+//                account.setEmail(rs.getString("email"));
+//                account.setPassword(rs.getString("password"));
+//                account.setGender(rs.getString("gender"));
+//                account.setHeight(rs.getDouble("height"));
+//                account.setWeight(rs.getDouble("weight"));
+//                account.setCreateD(rs.getTimestamp("create_d"));
+//                return account;
+//            }
+//        });
     }
 
-    public Integer getAccountId(String email) {
+    public Integer selectAccountId(String email) {
         String sql = "SELECT id FROM account WHERE email = ?";
         Object[] params = new Object[]{email};
         return jdbcTemplate.queryForObject(sql, params, Integer.class);

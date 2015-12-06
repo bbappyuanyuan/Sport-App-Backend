@@ -3,7 +3,7 @@ package cn.edu.fudan.sport.frontend;
 import cn.edu.fudan.sport.domain.Account;
 import cn.edu.fudan.sport.view.AccountVo;
 import cn.edu.fudan.sport.view.BaseVo;
-import cn.edu.fudan.sport.view.FansVo;
+import cn.edu.fudan.sport.view.AccountsVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,7 +19,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class HttpServer {
@@ -133,17 +132,9 @@ public class HttpServer {
             if (response.getStatusLine().getStatusCode() == 200) {
                 HttpEntity entity = response.getEntity();
                 String body = EntityUtils.toString(entity);
-                FansVo vo = objectMapper.readValue(body, FansVo.class);
-                if (vo.getStatus() == 1) {
-                    List<Integer> ids = vo.getFans();
-                    List<Account> accounts = new ArrayList<>();
-                    for (Integer id : ids) {
-                        Account a = loginAccount(id);
-                        if (a == null)
-                            return null;
-                        accounts.add(a);
-                    }
-                }
+                AccountsVo vo = objectMapper.readValue(body, AccountsVo.class);
+                if (vo.getStatus() == 1)
+                    return vo.getAccounts();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -195,17 +186,9 @@ public class HttpServer {
             if (response.getStatusLine().getStatusCode() == 200) {
                 HttpEntity entity = response.getEntity();
                 String body = EntityUtils.toString(entity);
-                FansVo vo = objectMapper.readValue(body, FansVo.class);
-                if (vo.getStatus() == 1) {
-                    List<Integer> ids = vo.getFans();
-                    List<Account> accounts = new ArrayList<>();
-                    for (Integer id : ids) {
-                        Account a = loginAccount(id);
-                        if (a == null)
-                            return null;
-                        accounts.add(a);
-                    }
-                }
+                AccountsVo vo = objectMapper.readValue(body, AccountsVo.class);
+                if (vo.getStatus() == 1)
+                    return vo.getAccounts();
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -10,7 +10,7 @@ import java.util.List;
 public class FanDao {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     public void insert(Integer follower, Integer followee) {
         String sql = "INSERT INTO fan (follower, followee) VALUES (?, ?)";
