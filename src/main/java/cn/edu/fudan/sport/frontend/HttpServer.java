@@ -1,9 +1,9 @@
 package cn.edu.fudan.sport.frontend;
 
 import cn.edu.fudan.sport.domain.Account;
-import cn.edu.fudan.sport.view.AccountVo;
-import cn.edu.fudan.sport.view.BaseVo;
-import cn.edu.fudan.sport.view.AccountsVo;
+import cn.edu.fudan.sport.domain.Moment;
+import cn.edu.fudan.sport.domain.Record;
+import cn.edu.fudan.sport.vo.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -56,26 +56,6 @@ public class HttpServer {
         return null;
     }
 
-    public Account loginAccount(Integer id) {
-        String request = "/accounts";
-        try {
-            HttpGet httpGet = new HttpGet(new URIBuilder(host + request)
-                    .addParameter("id", String.valueOf(id))
-                    .build());
-            HttpResponse response = httpClient.execute(httpGet);
-            if (response.getStatusLine().getStatusCode() == 200) {
-                HttpEntity entity = response.getEntity();
-                String body = EntityUtils.toString(entity);
-                AccountVo vo = objectMapper.readValue(body, AccountVo.class);
-                if (vo.getStatus() == 1)
-                    return vo.getAccount();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public boolean registerAccount(String email, String password, String gender, Double height, Double weight) {
         String request = "/accounts";
         try {
@@ -98,6 +78,24 @@ public class HttpServer {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public Account getAccount(Integer id) {
+        String request = "/accounts/" + id;
+        try {
+            HttpGet httpGet = new HttpGet(host + request);
+            HttpResponse response = httpClient.execute(httpGet);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                HttpEntity entity = response.getEntity();
+                String body = EntityUtils.toString(entity);
+                AccountVo vo = objectMapper.readValue(body, AccountVo.class);
+                if (vo.getStatus() == 1)
+                    return vo.getAccount();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public boolean updateAccount(Integer id, String password, String gender, Double height, Double weight) {
@@ -196,6 +194,65 @@ public class HttpServer {
         return null;
     }
 
+    // Moments Controller
+    public List<Moment> getMoments(Integer id) {
+        String request = "/moments/" + id;
+        try {
+            HttpGet httpGet = new HttpGet(host + request);
+            HttpResponse response = httpClient.execute(httpGet);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                HttpEntity entity = response.getEntity();
+                String body = EntityUtils.toString(entity);
+                MomentsVo vo = objectMapper.readValue(body, MomentsVo.class);
+                if (vo.getStatus() == 1)
+                    return vo.getMoments();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Moment> getMoments(Integer id, Integer limit) {
+        String request = "/moments/" + id;
+        try {
+            HttpGet httpGet = new HttpGet(new URIBuilder(host + request)
+                    .addParameter("limit", String.valueOf(limit))
+                    .build());
+            HttpResponse response = httpClient.execute(httpGet);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                HttpEntity entity = response.getEntity();
+                String body = EntityUtils.toString(entity);
+                MomentsVo vo = objectMapper.readValue(body, MomentsVo.class);
+                if (vo.getStatus() == 1)
+                    return vo.getMoments();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean postMoment(Integer id, String message) {
+        String request = "/moments/" + id;
+        try {
+            HttpPost httpPost = new HttpPost(new URIBuilder(host + request)
+                    .addParameter("message", message)
+                    .build());
+            HttpResponse response = httpClient.execute(httpPost);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                HttpEntity entity = response.getEntity();
+                String body = EntityUtils.toString(entity);
+                BaseVo vo = objectMapper.readValue(body, BaseVo.class);
+                if (vo.getStatus() == 1)
+                    return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     // Portraits Controller
     public byte[] downloadPortrait(Integer id) {
         String request = "/portraits/" + id;
@@ -224,6 +281,68 @@ public class HttpServer {
             HttpResponse response = httpClient.execute(httpPost);
             if (response.getStatusLine().getStatusCode() == 200)
                 return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Records Controller
+    public List<Record> getRecords(Integer id) {
+        String request = "/records/" + id;
+        try {
+            HttpGet httpGet = new HttpGet(host + request);
+            HttpResponse response = httpClient.execute(httpGet);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                HttpEntity entity = response.getEntity();
+                String body = EntityUtils.toString(entity);
+                RecordsVo vo = objectMapper.readValue(body, RecordsVo.class);
+                if (vo.getStatus() == 1)
+                    return vo.getRecords();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Record> getRecords(Integer id, Integer limit) {
+        String request = "/records/" + id;
+        try {
+            HttpGet httpGet = new HttpGet(new URIBuilder(host + request)
+                    .addParameter("limit", String.valueOf(limit))
+                    .build());
+            HttpResponse response = httpClient.execute(httpGet);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                HttpEntity entity = response.getEntity();
+                String body = EntityUtils.toString(entity);
+                RecordsVo vo = objectMapper.readValue(body, RecordsVo.class);
+                if (vo.getStatus() == 1)
+                    return vo.getRecords();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean postRecord(Integer id, Integer duration, Double distance, Double maxSpeed, Integer steps) {
+        String request = "/records/" + id;
+        try {
+            HttpPost httpPost = new HttpPost(new URIBuilder(host + request)
+                    .addParameter("duration", String.valueOf(duration))
+                    .addParameter("distance", String.valueOf(distance))
+                    .addParameter("maxSpeed", String.valueOf(maxSpeed))
+                    .addParameter("steps", String.valueOf(steps))
+                    .build());
+            HttpResponse response = httpClient.execute(httpPost);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                HttpEntity entity = response.getEntity();
+                String body = EntityUtils.toString(entity);
+                BaseVo vo = objectMapper.readValue(body, BaseVo.class);
+                if (vo.getStatus() == 1)
+                    return true;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -2,8 +2,8 @@ package cn.edu.fudan.sport.controller;
 
 import cn.edu.fudan.sport.dao.AccountDao;
 import cn.edu.fudan.sport.domain.Account;
-import cn.edu.fudan.sport.view.AccountVo;
-import cn.edu.fudan.sport.view.BaseVo;
+import cn.edu.fudan.sport.vo.AccountVo;
+import cn.edu.fudan.sport.vo.BaseVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

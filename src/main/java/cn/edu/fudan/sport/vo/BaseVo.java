@@ -1,8 +1,11 @@
-package cn.edu.fudan.sport.view;
+package cn.edu.fudan.sport.vo;
 
 public class BaseVo {
 
     int status;
+
+    public BaseVo() {
+    }
 
     public BaseVo(int status) {
         this.status = status;

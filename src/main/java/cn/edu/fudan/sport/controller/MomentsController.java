@@ -3,8 +3,8 @@ package cn.edu.fudan.sport.controller;
 import cn.edu.fudan.sport.dao.FanDao;
 import cn.edu.fudan.sport.dao.MomentDao;
 import cn.edu.fudan.sport.domain.Moment;
-import cn.edu.fudan.sport.view.BaseVo;
-import cn.edu.fudan.sport.view.MomentsVo;
+import cn.edu.fudan.sport.vo.BaseVo;
+import cn.edu.fudan.sport.vo.MomentsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

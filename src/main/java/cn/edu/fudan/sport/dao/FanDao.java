@@ -25,13 +25,13 @@ public class FanDao {
     }
 
     public List<Integer> selectFollowees(Integer follower) {
-        String sql = "SELECT followee FROM fan WHERE follower = ?";
+        String sql = "SELECT DISTINCT followee FROM fan WHERE follower = ?";
         Object[] params = new Object[]{follower};
         return jdbcTemplate.queryForList(sql, params, Integer.class);
     }
 
     public List<Integer> selectFollowers(Integer followee) {
-        String sql = "SELECT follower FROM fan WHERE followee = ?";
+        String sql = "SELECT DISTINCT follower FROM fan WHERE followee = ?";
         Object[] params = new Object[]{followee};
         return jdbcTemplate.queryForList(sql, params, Integer.class);
     }

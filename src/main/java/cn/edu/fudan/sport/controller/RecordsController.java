@@ -2,8 +2,8 @@ package cn.edu.fudan.sport.controller;
 
 import cn.edu.fudan.sport.dao.RecordDao;
 import cn.edu.fudan.sport.domain.Record;
-import cn.edu.fudan.sport.view.BaseVo;
-import cn.edu.fudan.sport.view.RecordsVo;
+import cn.edu.fudan.sport.vo.BaseVo;
+import cn.edu.fudan.sport.vo.RecordsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +19,8 @@ public class RecordsController {
     private RecordDao recordDao;
 
     @RequestMapping(method = RequestMethod.POST)
-    public BaseVo record(@PathVariable Integer id, @RequestParam Integer duration, @RequestParam Double distance,
-                         @RequestParam Double maxSpeed, @RequestParam Integer steps) {
+    public BaseVo post(@PathVariable Integer id, @RequestParam Integer duration, @RequestParam Double distance,
+                       @RequestParam Double maxSpeed, @RequestParam Integer steps) {
         try {
             recordDao.insert(new Timestamp(new Date().getTime()), id, duration, distance, maxSpeed, steps);
         } catch (Exception e) {

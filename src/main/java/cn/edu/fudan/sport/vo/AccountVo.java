@@ -1,10 +1,14 @@
-package cn.edu.fudan.sport.view;
+package cn.edu.fudan.sport.vo;
 
 import cn.edu.fudan.sport.domain.Account;
 
 public class AccountVo extends BaseVo {
 
     Account account;
+
+    public AccountVo() {
+        super();
+    }
 
     public AccountVo(int status, Account account) {
         super(status);

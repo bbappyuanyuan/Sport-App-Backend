@@ -1,7 +1,7 @@
 package cn.edu.fudan.sport.controller;
 
 import cn.edu.fudan.sport.dao.PortraitDao;
-import cn.edu.fudan.sport.view.BaseVo;
+import cn.edu.fudan.sport.vo.BaseVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
