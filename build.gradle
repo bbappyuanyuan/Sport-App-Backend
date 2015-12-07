@@ -25,7 +25,7 @@ ext {
 dependencies {
 
     testCompile "junit:junit:${junitVersion}"
-    
+
     compile "org.apache.tomcat:tomcat-servlet-api:${tomcatVersion}"
 
     compile "org.springframework:spring-webmvc:${springVersion}"
@@ -45,4 +45,18 @@ dependencies {
 
     compile "org.apache.httpcomponents:httpclient:${httpComponentsVersion}"
     compile "org.apache.httpcomponents:httpmime:${httpComponentsVersion}"
+}
+
+task generateSDK(type: Jar, dependsOn: compileJava) {
+    baseName 'Sport-App-Backend-SDK'
+    from('build/classes/main') {
+        include 'cn/edu/fudan/sport/domain/**'
+        include 'cn/edu/fudan/sport/vo/**'
+        include 'cn/edu/fudan/sport/server/**'
+    }
+    from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {
+        include 'com/fasterxml/jackson/**'
+        include 'org/apache/http/**'
+        include 'org/apache/commons/**'
+    }
 }

@@ -1,4 +1,4 @@
-package cn.edu.fudan.sport.frontend;
+package cn.edu.fudan.sport.server;
 
 import cn.edu.fudan.sport.domain.Account;
 import org.junit.Ignore;
