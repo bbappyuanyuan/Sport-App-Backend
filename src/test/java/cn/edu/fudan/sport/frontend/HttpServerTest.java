@@ -1,7 +1,7 @@
 package cn.edu.fudan.sport.frontend;
 
 import cn.edu.fudan.sport.domain.Account;
-import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.DataOutputStream;
