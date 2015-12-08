@@ -9,12 +9,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 @Repository
-public class PortraitDao {
+public class PhotoDao {
 
     private String path = System.getProperty("catalina.home") + "/SPORT_DB";
 
-    public void saveOrUpdate(Integer accountId, MultipartFile file) {
-        File dest = new File(path + "/portrait/" + accountId);
+    public void saveOrUpdate(Integer momentId, MultipartFile file) {
+        File dest = new File(path + "/photo/" + momentId);
         if (!dest.exists())
             dest.mkdirs();
         try {
@@ -24,10 +24,10 @@ public class PortraitDao {
         }
     }
 
-    public byte[] load(Integer accountId) {
-        File dest = new File(path + "/portrait/" + accountId);
+    public byte[] load(Integer momentId) {
+        File dest = new File(path + "/photo/" + momentId);
         if (!dest.exists())
-            dest = new File(path + "/portrait/default");
+            dest = new File(path + "/photo/default");
         try {
             FileInputStream fis = new FileInputStream(dest);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();

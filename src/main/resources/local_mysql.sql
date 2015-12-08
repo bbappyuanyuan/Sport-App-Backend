@@ -2,6 +2,7 @@ CREATE TABLE account (
   id       INTEGER AUTO_INCREMENT,
   email    VARCHAR(50) UNIQUE,
   password VARCHAR(50),
+  username VARCHAR(50),
   gender   VARCHAR(50),
   height   DOUBLE,
   weight   DOUBLE,
@@ -20,6 +21,7 @@ CREATE TABLE moment (
   id         INTEGER AUTO_INCREMENT,
   account_id INTEGER,
   message    VARCHAR(200),
+  has_photo  TINYINT(1),
   create_d   TIMESTAMP,
   PRIMARY KEY (id)
 );

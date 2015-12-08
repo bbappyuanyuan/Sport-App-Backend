@@ -7,6 +7,7 @@ public class Moment {
     Integer id;
     Integer accountId;
     String message;
+    Boolean hasPhoto;
     Timestamp createD;
 
     public Integer getId() {
@@ -31,6 +32,14 @@ public class Moment {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Boolean getHasPhoto() {
+        return hasPhoto;
+    }
+
+    public void setHasPhoto(Boolean hasPhoto) {
+        this.hasPhoto = hasPhoto;
     }
 
     public Timestamp getCreateD() {

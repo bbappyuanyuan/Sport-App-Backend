@@ -23,15 +23,16 @@ import java.util.List;
 
 public class HttpServer {
 
-    private static HttpServer server = new HttpServer();
-
     private String host = "http://localhost:8081/sport";
 
     private HttpClient httpClient = HttpClientBuilder.create().build();
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public static HttpServer getInstance() {
-        return server;
+    public HttpServer() {
+    }
+
+    public HttpServer(String host) {
+        this.host = host;
     }
 
     // Accounts Controller
@@ -56,12 +57,14 @@ public class HttpServer {
         return null;
     }
 
-    public boolean registerAccount(String email, String password, String gender, Double height, Double weight) {
+    public boolean registerAccount(String email, String password, String username, String gender, Double height,
+                                   Double weight) {
         String request = "/accounts";
         try {
             HttpPost httpPost = new HttpPost(new URIBuilder(host + request)
                     .addParameter("email", email)
                     .addParameter("password", password)
+                    .addParameter("username", username)
                     .addParameter("gender", gender)
                     .addParameter("height", String.valueOf(height))
                     .addParameter("weight", String.valueOf(weight))
@@ -70,7 +73,7 @@ public class HttpServer {
             if (response.getStatusLine().getStatusCode() == 200) {
                 HttpEntity entity = response.getEntity();
                 String body = EntityUtils.toString(entity);
-                BaseVo vo = objectMapper.readValue(body, BaseVo.class);
+                IdVo vo = objectMapper.readValue(body, IdVo.class);
                 if (vo.getStatus() == 1)
                     return true;
             }
@@ -98,11 +101,33 @@ public class HttpServer {
         return null;
     }
 
-    public boolean updateAccount(Integer id, String password, String gender, Double height, Double weight) {
+    public List<Account> getAccounts(String username) {
+        String request = "/accounts";
+        try {
+            HttpGet httpGet = new HttpGet(new URIBuilder(host + request)
+                    .addParameter("username", username)
+                    .build());
+            HttpResponse response = httpClient.execute(httpGet);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                HttpEntity entity = response.getEntity();
+                String body = EntityUtils.toString(entity);
+                AccountsVo vo = objectMapper.readValue(body, AccountsVo.class);
+                if (vo.getStatus() == 1)
+                    return vo.getAccounts();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean updateAccount(Integer id, String password, String username, String gender, Double height,
+                                 Double weight) {
         String request = "/accounts/" + id;
         try {
             HttpPut httpPut = new HttpPut(new URIBuilder(host + request)
                     .addParameter("password", password)
+                    .addParameter("username", username)
                     .addParameter("gender", gender)
                     .addParameter("height", String.valueOf(height))
                     .addParameter("weight", String.valueOf(weight))
@@ -233,19 +258,24 @@ public class HttpServer {
         return null;
     }
 
-    public boolean postMoment(Integer id, String message) {
+    public boolean postMoment(Integer id, String message, File photo) {
         String request = "/moments/" + id;
         try {
             HttpPost httpPost = new HttpPost(new URIBuilder(host + request)
                     .addParameter("message", message)
+                    .addParameter("hasPhoto", String.valueOf(photo != null))
                     .build());
             HttpResponse response = httpClient.execute(httpPost);
             if (response.getStatusLine().getStatusCode() == 200) {
                 HttpEntity entity = response.getEntity();
                 String body = EntityUtils.toString(entity);
-                BaseVo vo = objectMapper.readValue(body, BaseVo.class);
-                if (vo.getStatus() == 1)
-                    return true;
+                IdVo vo = objectMapper.readValue(body, IdVo.class);
+                if (vo.getStatus() == 1) {
+                    if (photo == null)
+                        return true;
+                    if (uploadPhoto(vo.getId(), photo))
+                        return true;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -343,6 +373,40 @@ public class HttpServer {
                 if (vo.getStatus() == 1)
                     return true;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Photos Controller
+    public byte[] downloadPhoto(Integer id) {
+        String request = "/photos/" + id;
+        try {
+            HttpGet httpGet = new HttpGet(host + request);
+            HttpResponse response = httpClient.execute(httpGet);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                HttpEntity entity = response.getEntity();
+                return EntityUtils.toByteArray(entity);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private boolean uploadPhoto(Integer id, File file) {
+        String request = "/photos/" + id;
+        try {
+            HttpPost httpPost = new HttpPost(host + request);
+            HttpEntity entity = MultipartEntityBuilder
+                    .create()
+                    .addBinaryBody("file", file, ContentType.APPLICATION_OCTET_STREAM, file.getName())
+                    .build();
+            httpPost.setEntity(entity);
+            HttpResponse response = httpClient.execute(httpPost);
+            if (response.getStatusLine().getStatusCode() == 200)
+                return true;
         } catch (Exception e) {
             e.printStackTrace();
         }

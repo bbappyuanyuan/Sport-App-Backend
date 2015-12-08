@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Repository
 public class AccountDao {
@@ -14,11 +15,13 @@ public class AccountDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void insert(String email, String password, String gender, Double height, Double weight, Timestamp createD) {
-        String sql = "INSERT INTO account (email, password, create_d, gender, height, weight)" +
-                "VALUES (?, ?, ?, ?, ?, ?)";
-        Object[] params = new Object[]{email, password, createD, gender, height, weight};
+    public synchronized Integer insert(String email, String password, String username, String gender, Double height, Double weight,
+                          Timestamp createD) {
+        String sql = "INSERT INTO account (email, password, username, create_d, gender, height, weight)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        Object[] params = new Object[]{email, password, username, createD, gender, height, weight};
         jdbcTemplate.update(sql, params);
+        return jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
     }
 
     public Account select(String email, String password) {
@@ -33,18 +36,17 @@ public class AccountDao {
         return jdbcTemplate.queryForObject(sql, params, new BeanPropertyRowMapper<>(Account.class));
     }
 
-    public Integer selectAccountId(String email) {
-        String sql = "SELECT id FROM account WHERE email = ?";
-        Object[] params = new Object[]{email};
-        return jdbcTemplate.queryForObject(sql, params, Integer.class);
+    public List<Account> select(String username) {
+        String sql = "SELECT * FROM account WHERE username = ?";
+        Object[] params = new Object[]{username};
+        return jdbcTemplate.query(sql, params, new BeanPropertyRowMapper<>(Account.class));
     }
 
-    public void update(Account account) {
+    public void update(Integer id, String password, String username, String gender, Double height, Double weight) {
         String sql = "UPDATE account\n" +
-                "SET password = ?, gender = ?, height = ?, weight = ?\n" +
+                "SET password = ?, username = ?, gender = ?, height = ?, weight = ?\n" +
                 "WHERE id = ?";
-        Object[] params = new Object[]{account.getPassword(), account.getGender(), account.getHeight(),
-                account.getWeight(), account.getId()};
+        Object[] params = new Object[]{password, username, gender, height, weight, id};
         jdbcTemplate.update(sql, params);
     }
 }

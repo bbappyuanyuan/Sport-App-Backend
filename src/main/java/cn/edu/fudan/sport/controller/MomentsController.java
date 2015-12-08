@@ -3,7 +3,7 @@ package cn.edu.fudan.sport.controller;
 import cn.edu.fudan.sport.dao.FanDao;
 import cn.edu.fudan.sport.dao.MomentDao;
 import cn.edu.fudan.sport.domain.Moment;
-import cn.edu.fudan.sport.vo.BaseVo;
+import cn.edu.fudan.sport.vo.IdVo;
 import cn.edu.fudan.sport.vo.MomentsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +24,15 @@ public class MomentsController {
     private FanDao fanDao;
 
     @RequestMapping(method = RequestMethod.POST)
-    public BaseVo post(@PathVariable Integer id, @RequestParam String message) {
+    public IdVo post(@PathVariable Integer id, @RequestParam String message,
+                     @RequestParam(required = false, defaultValue = "false") Boolean hasPhoto) {
+        Integer respId = null;
         try {
-            momentDao.insert(id, message, new Timestamp(new Date().getTime()));
+            respId = momentDao.insert(id, message, hasPhoto, new Timestamp(new Date().getTime()));
         } catch (Exception e) {
-            return new BaseVo(0);
+            return new IdVo(0, null);
         }
-        return new BaseVo(1);
+        return new IdVo(1, respId);
     }
 
     @RequestMapping(method = RequestMethod.GET)
