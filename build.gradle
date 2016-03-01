@@ -45,6 +45,8 @@ dependencies {
 
     compile "org.apache.httpcomponents:httpclient:${httpComponentsVersion}"
     compile "org.apache.httpcomponents:httpmime:${httpComponentsVersion}"
+
+    compile "cz.msebera.android:httpclient:4.4.1.1"
 }
 
 task generateSDK(type: Jar, dependsOn: compileJava) {
