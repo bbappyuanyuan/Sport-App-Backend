@@ -1,4 +1,4 @@
-package cn.edu.fudan.sport.server;
+package cn.edu.fudan.sport.client;
 
 import cn.edu.fudan.sport.domain.Account;
 import cn.edu.fudan.sport.domain.Moment;
@@ -21,17 +21,17 @@ import org.apache.http.util.EntityUtils;
 import java.io.File;
 import java.util.List;
 
-public class HttpServer {
+public class MyHttpClient {
 
     private String host = "http://localhost:8081/sport";
 
     private HttpClient httpClient = HttpClientBuilder.create().build();
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public HttpServer() {
+    public MyHttpClient() {
     }
 
-    public HttpServer(String host) {
+    public MyHttpClient(String host) {
         this.host = host;
     }
 
